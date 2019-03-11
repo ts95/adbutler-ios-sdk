@@ -10,17 +10,21 @@ import UIKit
 
 public class ABImageView: UIImageView {
     var placement: Placement?
-    
+
     func setupGestures() {
         isUserInteractionEnabled = true
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tap))
         addGestureRecognizer(tapGesture)
     }
-    
+
     @objc func tap() {
         if let urlString = placement?.redirectUrl, let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
         }
     }
 }
